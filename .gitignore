@@ -27,6 +27,7 @@ fastlane/test_output/
 
 # Logs
 *.log
+.DS_Store
 
 # Secrets
 *.p12

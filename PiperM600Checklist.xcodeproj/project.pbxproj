@@ -1,0 +1,370 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1B2C3D4E5F6010101010001 /* PiperM600ChecklistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6010101010002 /* PiperM600ChecklistApp.swift */; };
+		A1B2C3D4E5F6010101010003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6010101010004 /* ContentView.swift */; };
+		A1B2C3D4E5F6010101010005 /* ChecklistData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6010101010006 /* ChecklistData.swift */; };
+		A1B2C3D4E5F6010101010007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6010101010008 /* Assets.xcassets */; };
+		A1B2C3D4E5F6010101010018 /* ChecklistStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6010101010019 /* ChecklistStore.swift */; };
+		A1B2C3D4E5F601010101001A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601010101001B /* SettingsView.swift */; };
+		A1B2C3D4E5F601010101001C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601010101001D /* LaunchScreen.storyboard */; };
+		A1F789DF2F34B8FB002B254C /* ScratchpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789DE2F34B8FB002B254C /* ScratchpadView.swift */; };
+		A1F789E12F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A1F789E02F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf */; };
+		A1F789EB2F34D534002B254C /* G3000View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789EA2F34D534002B254C /* G3000View.swift */; };
+		A1F789EC2F34D534002B254C /* G3000SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789E92F34D534002B254C /* G3000SettingsView.swift */; };
+		A1F789ED2F34D534002B254C /* G3000IndexCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789E82F34D534002B254C /* G3000IndexCache.swift */; };
+		B1C2D3E4F501020304050607 /* POHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F501020304050608 /* POHView.swift */; };
+		B1C2D3E4F501020304050609 /* PA-46-600TP POH.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F50102030405060A /* PA-46-600TP POH.pdf */; };
+		C1D2E3F4A501020304050601 /* POHIndexCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A501020304050602 /* POHIndexCache.swift */; };
+		D1E2F3A4B501020304050603 /* POHSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B501020304050604 /* POHSettingsView.swift */; };
+		E1A2B3C4D501020304050611 /* DocumentsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D501020304050612 /* DocumentsStore.swift */; };
+		E1A2B3C4D501020304050613 /* DocumentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D501020304050614 /* DocumentsView.swift */; };
+		E1A2B3C4D501020304050615 /* DocumentsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D501020304050616 /* DocumentsSettingsView.swift */; };
+		E1A2B3C4D501020304050617 /* DocumentPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D501020304050618 /* DocumentPDFView.swift */; };
+		EA22B6498E3046E7910D6384 /* WeightBalanceViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90827224E65545D0925E84F7 /* WeightBalanceViews.swift */; };
+		F2A3B4C5D6E7010203040001 /* WeatherTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3B4C5D6E7010203040002 /* WeatherTestView.swift */; };
+		F3B4C5D6E7010203040003 /* BoardingPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B4C5D6E7010203040004 /* BoardingPassView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		90827224E65545D0925E84F7 /* WeightBalanceViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightBalanceViews.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6010101010002 /* PiperM600ChecklistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiperM600ChecklistApp.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6010101010004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6010101010006 /* ChecklistData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistData.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6010101010008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1B2C3D4E5F6010101010009 /* PiperM600Checklist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = PiperM600Checklist.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D4E5F601010101000A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B2C3D4E5F6010101010019 /* ChecklistStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistStore.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601010101001B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601010101001D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A1F789DE2F34B8FB002B254C /* ScratchpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScratchpadView.swift; sourceTree = "<group>"; };
+		A1F789E02F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "M600 G3000 Pilot Guide.pdf"; sourceTree = "<group>"; };
+		A1F789E82F34D534002B254C /* G3000IndexCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = G3000IndexCache.swift; sourceTree = "<group>"; };
+		A1F789E92F34D534002B254C /* G3000SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = G3000SettingsView.swift; sourceTree = "<group>"; };
+		A1F789EA2F34D534002B254C /* G3000View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = G3000View.swift; sourceTree = "<group>"; };
+		B1C2D3E4F501020304050608 /* POHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POHView.swift; sourceTree = "<group>"; };
+		B1C2D3E4F50102030405060A /* PA-46-600TP POH.pdf */ = {isa = PBXFileReference; lastKnownFileType = file.pdf; path = "PA-46-600TP POH.pdf"; sourceTree = "<group>"; };
+		C1D2E3F4A501020304050602 /* POHIndexCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POHIndexCache.swift; sourceTree = "<group>"; };
+		D1E2F3A4B501020304050604 /* POHSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POHSettingsView.swift; sourceTree = "<group>"; };
+		E1A2B3C4D501020304050612 /* DocumentsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsStore.swift; sourceTree = "<group>"; };
+		E1A2B3C4D501020304050614 /* DocumentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsView.swift; sourceTree = "<group>"; };
+		E1A2B3C4D501020304050616 /* DocumentsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsSettingsView.swift; sourceTree = "<group>"; };
+		E1A2B3C4D501020304050618 /* DocumentPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPDFView.swift; sourceTree = "<group>"; };
+		F2A3B4C5D6E7010203040002 /* WeatherTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTestView.swift; sourceTree = "<group>"; };
+		F3B4C5D6E7010203040004 /* BoardingPassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardingPassView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		A1B2C3D4E5F601010101000C /* PiperM600Checklist */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F6010101010002 /* PiperM600ChecklistApp.swift */,
+				A1B2C3D4E5F6010101010004 /* ContentView.swift */,
+				A1B2C3D4E5F6010101010006 /* ChecklistData.swift */,
+				A1B2C3D4E5F6010101010019 /* ChecklistStore.swift */,
+				A1B2C3D4E5F601010101001B /* SettingsView.swift */,
+				90827224E65545D0925E84F7 /* WeightBalanceViews.swift */,
+				B1C2D3E4F501020304050608 /* POHView.swift */,
+				C1D2E3F4A501020304050602 /* POHIndexCache.swift */,
+				D1E2F3A4B501020304050604 /* POHSettingsView.swift */,
+				E1A2B3C4D501020304050612 /* DocumentsStore.swift */,
+				E1A2B3C4D501020304050614 /* DocumentsView.swift */,
+				E1A2B3C4D501020304050616 /* DocumentsSettingsView.swift */,
+				E1A2B3C4D501020304050618 /* DocumentPDFView.swift */,
+				F2A3B4C5D6E7010203040002 /* WeatherTestView.swift */,
+				F3B4C5D6E7010203040004 /* BoardingPassView.swift */,
+				A1B2C3D4E5F601010101001D /* LaunchScreen.storyboard */,
+				A1B2C3D4E5F6010101010008 /* Assets.xcassets */,
+				A1F789E02F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf */,
+				A1F789E82F34D534002B254C /* G3000IndexCache.swift */,
+				A1F789E92F34D534002B254C /* G3000SettingsView.swift */,
+				A1F789EA2F34D534002B254C /* G3000View.swift */,
+				B1C2D3E4F50102030405060A /* PA-46-600TP POH.pdf */,
+				A1B2C3D4E5F601010101000A /* Info.plist */,
+			);
+			path = PiperM600Checklist;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F601010101000D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F6010101010009 /* PiperM600Checklist.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F601010101000E = {
+			isa = PBXGroup;
+			children = (
+				A1F789DE2F34B8FB002B254C /* ScratchpadView.swift */,
+				A1B2C3D4E5F601010101000C /* PiperM600Checklist */,
+				A1B2C3D4E5F601010101000D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A1B2C3D4E5F601010101000F /* PiperM600Checklist */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D4E5F6010101010010 /* Build configuration list for PBXNativeTarget "PiperM600Checklist" */;
+			buildPhases = (
+				A1B2C3D4E5F6010101010011 /* Sources */,
+				A1B2C3D4E5F6010101010013 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PiperM600Checklist;
+			productName = PiperM600Checklist;
+			productReference = A1B2C3D4E5F6010101010009 /* PiperM600Checklist.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1B2C3D4E5F6010101010014 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					A1B2C3D4E5F601010101000F = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A1B2C3D4E5F6010101010015 /* Build configuration list for PBXProject "PiperM600Checklist" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A1B2C3D4E5F601010101000E;
+			productRefGroup = A1B2C3D4E5F601010101000D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A1B2C3D4E5F601010101000F /* PiperM600Checklist */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A1B2C3D4E5F6010101010013 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F6010101010007 /* Assets.xcassets in Resources */,
+				A1F789E12F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf in Resources */,
+				A1B2C3D4E5F601010101001C /* LaunchScreen.storyboard in Resources */,
+				B1C2D3E4F501020304050609 /* PA-46-600TP POH.pdf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1B2C3D4E5F6010101010011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F6010101010001 /* PiperM600ChecklistApp.swift in Sources */,
+				A1F789EB2F34D534002B254C /* G3000View.swift in Sources */,
+				A1F789EC2F34D534002B254C /* G3000SettingsView.swift in Sources */,
+				A1F789ED2F34D534002B254C /* G3000IndexCache.swift in Sources */,
+				A1F789DF2F34B8FB002B254C /* ScratchpadView.swift in Sources */,
+				A1B2C3D4E5F6010101010003 /* ContentView.swift in Sources */,
+				A1B2C3D4E5F6010101010005 /* ChecklistData.swift in Sources */,
+				A1B2C3D4E5F6010101010018 /* ChecklistStore.swift in Sources */,
+				A1B2C3D4E5F601010101001A /* SettingsView.swift in Sources */,
+				EA22B6498E3046E7910D6384 /* WeightBalanceViews.swift in Sources */,
+				B1C2D3E4F501020304050607 /* POHView.swift in Sources */,
+				C1D2E3F4A501020304050601 /* POHIndexCache.swift in Sources */,
+				D1E2F3A4B501020304050603 /* POHSettingsView.swift in Sources */,
+				E1A2B3C4D501020304050611 /* DocumentsStore.swift in Sources */,
+				E1A2B3C4D501020304050613 /* DocumentsView.swift in Sources */,
+				E1A2B3C4D501020304050615 /* DocumentsSettingsView.swift in Sources */,
+				E1A2B3C4D501020304050617 /* DocumentPDFView.swift in Sources */,
+				F2A3B4C5D6E7010203040001 /* WeatherTestView.swift in Sources */,
+				F3B4C5D6E7010203040003 /* BoardingPassView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A1B2C3D4E5F6010101010016 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = P44LRY5738;
+				INFOPLIST_FILE = PiperM600Checklist/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "M600 Tools";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = paolo.m600checklist.new;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B2C3D4E5F6010101010017 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = P44LRY5738;
+				INFOPLIST_FILE = PiperM600Checklist/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "M600 Tools";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = paolo.m600checklist.new;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1B2C3D4E5F6010101010020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A1B2C3D4E5F6010101010021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1B2C3D4E5F6010101010010 /* Build configuration list for PBXNativeTarget "PiperM600Checklist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D4E5F6010101010016 /* Debug */,
+				A1B2C3D4E5F6010101010017 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D4E5F6010101010015 /* Build configuration list for PBXProject "PiperM600Checklist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D4E5F6010101010020 /* Debug */,
+				A1B2C3D4E5F6010101010021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1B2C3D4E5F6010101010014 /* Project object */;
+}

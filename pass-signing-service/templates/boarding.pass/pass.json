@@ -1,0 +1,15 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "pass.com.example.boarding",
+  "serialNumber": "TEMPLATE",
+  "teamIdentifier": "TEAMID",
+  "organizationName": "Elite Air",
+  "description": "Boarding pass",
+  "logoText": "Elite Air",
+  "foregroundColor": "rgb(255,255,255)",
+  "backgroundColor": "rgb(0,0,0)",
+  "labelColor": "rgb(200,200,200)",
+  "boardingPass": {
+    "transitType": "PKTransitTypeAir"
+  }
+}

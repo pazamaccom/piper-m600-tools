@@ -1,0 +1,33 @@
+# Xcode
+*.xcuserstate
+*.xcuserdata/
+*.xcuserdatad/
+*.xcuserdatad
+
+# Build
+DerivedData/
+build/
+
+# SwiftPM
+.build/
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Logs
+*.log
+
+# Secrets
+*.p12
+*.pem

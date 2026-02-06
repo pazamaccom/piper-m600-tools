@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
+import { Storage } from "@google-cloud/storage";
 import { PKPass } from "passkit-generator";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(express.json({ limit: "1mb" }));
 
 const secretsClient = new SecretManagerServiceClient();
+const storage = new Storage();
 
 const REQUIRED_ENV = [
   "PASS_TYPE_ID",
@@ -20,7 +22,9 @@ const REQUIRED_ENV = [
   "SIGNER_CERT_SECRET",
   "SIGNER_KEY_SECRET",
   "SIGNER_KEY_PASSPHRASE_SECRET",
-  "WWDR_CERT_SECRET"
+  "WWDR_CERT_SECRET",
+  "DEFAULT_DOCS_BUCKET",
+  "DEFAULT_DOCS_CODE_SECRET"
 ];
 for (const key of REQUIRED_ENV) {
   if (!process.env[key]) {
@@ -37,6 +41,11 @@ async function accessSecret(secretName) {
   return version.payload.data;
 }
 
+async function accessSecretString(secretName) {
+  const buffer = await accessSecret(secretName);
+  return buffer.toString("utf8").trim();
+}
+
 function safeValue(value, fallback = "--") {
   const trimmed = String(value || "").trim();
   return trimmed.length ? trimmed : fallback;
@@ -44,6 +53,56 @@ function safeValue(value, fallback = "--") {
 
 app.get("/health", (_req, res) => {
   res.status(200).send("ok");
+});
+
+app.post("/default-doc", async (req, res) => {
+  try {
+    const payload = req.body || {};
+    const code = String(payload.code || "").trim();
+    const doc = String(payload.doc || "").trim().toLowerCase();
+
+    if (!code || !doc) {
+      res.status(400).json({ error: "Missing code or doc." });
+      return;
+    }
+
+    const expectedCode = await accessSecretString(process.env.DEFAULT_DOCS_CODE_SECRET);
+    if (code !== expectedCode) {
+      res.status(403).json({ error: "Invalid access code." });
+      return;
+    }
+
+    const bucketName = process.env.DEFAULT_DOCS_BUCKET;
+    const objectName =
+      doc === "poh"
+        ? process.env.DEFAULT_POH_OBJECT || "POH.pdf"
+        : doc === "g3000"
+          ? process.env.DEFAULT_G3000_OBJECT || "G3000.pdf"
+          : null;
+
+    if (!objectName) {
+      res.status(400).json({ error: "Unknown document." });
+      return;
+    }
+
+    const file = storage.bucket(bucketName).file(objectName);
+    const [exists] = await file.exists();
+    if (!exists) {
+      res.status(404).json({ error: "Document not found." });
+      return;
+    }
+
+    const [signedUrl] = await file.getSignedUrl({
+      version: "v4",
+      action: "read",
+      expires: Date.now() + 15 * 60 * 1000
+    });
+
+    res.status(200).json({ url: signedUrl });
+  } catch (error) {
+    console.error(error?.message || error);
+    res.status(500).json({ error: "Failed to fetch document." });
+  }
 });
 
 app.post("/sign", async (req, res) => {

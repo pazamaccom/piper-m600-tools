@@ -15,12 +15,10 @@
 		A1B2C3D4E5F601010101001A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601010101001B /* SettingsView.swift */; };
 		A1B2C3D4E5F601010101001C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601010101001D /* LaunchScreen.storyboard */; };
 		A1F789DF2F34B8FB002B254C /* ScratchpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789DE2F34B8FB002B254C /* ScratchpadView.swift */; };
-		A1F789E12F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A1F789E02F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf */; };
 		A1F789EB2F34D534002B254C /* G3000View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789EA2F34D534002B254C /* G3000View.swift */; };
 		A1F789EC2F34D534002B254C /* G3000SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789E92F34D534002B254C /* G3000SettingsView.swift */; };
 		A1F789ED2F34D534002B254C /* G3000IndexCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F789E82F34D534002B254C /* G3000IndexCache.swift */; };
 		B1C2D3E4F501020304050607 /* POHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F501020304050608 /* POHView.swift */; };
-		B1C2D3E4F501020304050609 /* PA-46-600TP POH.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F50102030405060A /* PA-46-600TP POH.pdf */; };
 		C1D2E3F4A501020304050601 /* POHIndexCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A501020304050602 /* POHIndexCache.swift */; };
 		D1E2F3A4B501020304050603 /* POHSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B501020304050604 /* POHSettingsView.swift */; };
 		E1A2B3C4D501020304050611 /* DocumentsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D501020304050612 /* DocumentsStore.swift */; };
@@ -30,6 +28,8 @@
 		EA22B6498E3046E7910D6384 /* WeightBalanceViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90827224E65545D0925E84F7 /* WeightBalanceViews.swift */; };
 		F2A3B4C5D6E7010203040001 /* WeatherTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3B4C5D6E7010203040002 /* WeatherTestView.swift */; };
 		F3B4C5D6E7010203040003 /* BoardingPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B4C5D6E7010203040004 /* BoardingPassView.swift */; };
+		F4A5B6C7D801020304000501 /* DocumentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5B6C7D801020304000502 /* DocumentStorage.swift */; };
+		F4A5B6C7D801020304000503 /* DefaultDocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5B6C7D801020304000504 /* DefaultDocumentService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,12 +44,10 @@
 		A1B2C3D4E5F601010101001B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F601010101001D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F789DE2F34B8FB002B254C /* ScratchpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScratchpadView.swift; sourceTree = "<group>"; };
-		A1F789E02F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "M600 G3000 Pilot Guide.pdf"; sourceTree = "<group>"; };
 		A1F789E82F34D534002B254C /* G3000IndexCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = G3000IndexCache.swift; sourceTree = "<group>"; };
 		A1F789E92F34D534002B254C /* G3000SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = G3000SettingsView.swift; sourceTree = "<group>"; };
 		A1F789EA2F34D534002B254C /* G3000View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = G3000View.swift; sourceTree = "<group>"; };
 		B1C2D3E4F501020304050608 /* POHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POHView.swift; sourceTree = "<group>"; };
-		B1C2D3E4F50102030405060A /* PA-46-600TP POH.pdf */ = {isa = PBXFileReference; lastKnownFileType = file.pdf; path = "PA-46-600TP POH.pdf"; sourceTree = "<group>"; };
 		C1D2E3F4A501020304050602 /* POHIndexCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POHIndexCache.swift; sourceTree = "<group>"; };
 		D1E2F3A4B501020304050604 /* POHSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POHSettingsView.swift; sourceTree = "<group>"; };
 		E1A2B3C4D501020304050612 /* DocumentsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsStore.swift; sourceTree = "<group>"; };
@@ -58,6 +56,8 @@
 		E1A2B3C4D501020304050618 /* DocumentPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPDFView.swift; sourceTree = "<group>"; };
 		F2A3B4C5D6E7010203040002 /* WeatherTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTestView.swift; sourceTree = "<group>"; };
 		F3B4C5D6E7010203040004 /* BoardingPassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardingPassView.swift; sourceTree = "<group>"; };
+		F4A5B6C7D801020304000502 /* DocumentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentStorage.swift; sourceTree = "<group>"; };
+		F4A5B6C7D801020304000504 /* DefaultDocumentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDocumentService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -73,6 +73,8 @@
 				B1C2D3E4F501020304050608 /* POHView.swift */,
 				C1D2E3F4A501020304050602 /* POHIndexCache.swift */,
 				D1E2F3A4B501020304050604 /* POHSettingsView.swift */,
+				F4A5B6C7D801020304000502 /* DocumentStorage.swift */,
+				F4A5B6C7D801020304000504 /* DefaultDocumentService.swift */,
 				E1A2B3C4D501020304050612 /* DocumentsStore.swift */,
 				E1A2B3C4D501020304050614 /* DocumentsView.swift */,
 				E1A2B3C4D501020304050616 /* DocumentsSettingsView.swift */,
@@ -81,11 +83,9 @@
 				F3B4C5D6E7010203040004 /* BoardingPassView.swift */,
 				A1B2C3D4E5F601010101001D /* LaunchScreen.storyboard */,
 				A1B2C3D4E5F6010101010008 /* Assets.xcassets */,
-				A1F789E02F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf */,
 				A1F789E82F34D534002B254C /* G3000IndexCache.swift */,
 				A1F789E92F34D534002B254C /* G3000SettingsView.swift */,
 				A1F789EA2F34D534002B254C /* G3000View.swift */,
-				B1C2D3E4F50102030405060A /* PA-46-600TP POH.pdf */,
 				A1B2C3D4E5F601010101000A /* Info.plist */,
 			);
 			path = PiperM600Checklist;
@@ -166,9 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1B2C3D4E5F6010101010007 /* Assets.xcassets in Resources */,
-				A1F789E12F34CD4B002B254C /* M600 G3000 Pilot Guide.pdf in Resources */,
 				A1B2C3D4E5F601010101001C /* LaunchScreen.storyboard in Resources */,
-				B1C2D3E4F501020304050609 /* PA-46-600TP POH.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +190,8 @@
 				B1C2D3E4F501020304050607 /* POHView.swift in Sources */,
 				C1D2E3F4A501020304050601 /* POHIndexCache.swift in Sources */,
 				D1E2F3A4B501020304050603 /* POHSettingsView.swift in Sources */,
+				F4A5B6C7D801020304000501 /* DocumentStorage.swift in Sources */,
+				F4A5B6C7D801020304000503 /* DefaultDocumentService.swift in Sources */,
 				E1A2B3C4D501020304050611 /* DocumentsStore.swift in Sources */,
 				E1A2B3C4D501020304050613 /* DocumentsView.swift in Sources */,
 				E1A2B3C4D501020304050615 /* DocumentsSettingsView.swift in Sources */,
@@ -221,7 +221,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = paolo.m600checklist.new;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -249,7 +249,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = paolo.m600checklist.new;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -53,11 +53,31 @@ struct G3000View: View {
                         .inset(by: 1)
                         .stroke(AppTheme.bezelLight, lineWidth: 1)
                 )
+                .overlay {
+                    if model.document == nil {
+                        VStack(spacing: 12) {
+                            Image(systemName: "doc.text.magnifyingglass")
+                                .font(.system(size: 34, weight: .semibold))
+                                .foregroundColor(AppTheme.accent)
+                            Text("No G3000 Guide loaded")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Text("Open Settings to load a PDF or download the default guide.")
+                                .font(.subheadline)
+                                .foregroundColor(.white.opacity(0.7))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 24)
+                        }
+                        .padding(24)
+                    }
+                }
                 .cornerRadius(16)
                 .shadow(color: Color.black.opacity(0.35), radius: 10, x: 0, y: 6)
                 .simultaneousGesture(
                     TapGesture().onEnded {
-                        showFullScreen = true
+                        if model.document != nil {
+                            showFullScreen = true
+                        }
                     }
                 )
             }
@@ -125,14 +145,14 @@ struct G3000View: View {
                 }
                 if G3000IndexCache.consumeClearedFlag() {
                     Task {
-                        await model.rebuildIndex()
+                        await model.rebuildIndex(forceReload: true)
                     }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: G3000IndexCache.didClearNotification)) { _ in
                 model.indexBannerVisible = true
                 Task {
-                    await model.rebuildIndex()
+                    await model.rebuildIndex(forceReload: true)
                 }
             }
             .onChange(of: model.document?.pageCount ?? 0) { newValue in
@@ -425,9 +445,10 @@ final class G3000ViewModel: ObservableObject {
 
 
     var resultsSummary: String {
+        guard document != nil else { return "Load a G3000 PDF in Settings." }
         guard !isIndexing else { return "Indexing..." }
         guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return "Enter a search term." }
-        if query.trimmingCharacters(in: .whitespacesAndNewlines).count < 2 { return "Type at least 2 characters." }
+        if query.trimmingCharacters(in: .whitespacesAndNewlines).count < 4 { return "Type at least 4 characters." }
         if results.isEmpty { return "No matches found." }
         if resultsCapped { return "Showing first 200 matches." }
         return "Matches: \(currentIndexDisplay)"
@@ -467,9 +488,14 @@ final class G3000ViewModel: ObservableObject {
         }
     }
 
-    func rebuildIndex() async {
-        if document == nil {
+    func rebuildIndex(forceReload: Bool = false) async {
+        if forceReload || document == nil {
             document = G3000DocumentProvider.loadDocument()
+            if let document {
+                outlineItems = G3000OutlineItem.build(from: document)
+            } else {
+                outlineItems = []
+            }
         }
         indexBannerVisible = true
         isIndexing = true
@@ -518,7 +544,7 @@ final class G3000ViewModel: ObservableObject {
 
     private func performSearch(query: String) async {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.count < 2 {
+        if trimmed.count < 4 {
             results = []
             currentSelection = nil
             currentHighlight = []
@@ -576,11 +602,18 @@ final class G3000ViewModel: ObservableObject {
         if document == nil {
             document = G3000DocumentProvider.loadDocument()
         }
-        guard document != nil else { return }
+        guard document != nil else {
+            isIndexing = false
+            indexBannerVisible = false
+            return
+        }
 
         if let cached = G3000SearchIndex.loadIfValid(from: pdfURL) {
             if cached.hasUsableText {
                 index = cached
+                isIndexing = false
+                indexBannerVisible = false
+                indexDetail = ""
                 if !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     Task { [weak self] in
                         guard let self else { return }
@@ -691,7 +724,8 @@ final class G3000ViewModel: ObservableObject {
 
 private enum G3000DocumentProvider {
     static var documentURL: URL? {
-        Bundle.main.url(forResource: "M600 G3000 Pilot Guide", withExtension: "pdf")
+        guard DocumentStorage.exists(.g3000) else { return nil }
+        return DocumentStorage.localURL(for: .g3000)
     }
 
     static func loadDocument() -> PDFDocument? {
@@ -974,7 +1008,7 @@ private struct G3000SearchIndex: Codable {
         guard !trimmed.isEmpty else { return [] }
 
         let tokens = tokens(from: trimmed)
-        let candidatePages = pages(matching: tokens, tokenIndex: tokenIndex, pageCount: pageCount)
+        let candidatePages = pages(matching: tokens, tokenIndex: tokenIndex, pageCount: pageCount, minPrefixLength: 4)
 
         var results: [G3000SearchHit] = []
         for pageIndex in candidatePages {
@@ -1015,17 +1049,15 @@ private struct G3000SearchIndex: Codable {
         return snippet.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private static func pages(matching tokens: [String], tokenIndex: [String: [Int]], pageCount: Int) -> [Int] {
+    private static func pages(matching tokens: [String], tokenIndex: [String: [Int]], pageCount: Int, minPrefixLength: Int) -> [Int] {
         guard !tokens.isEmpty else {
             return Array(0..<pageCount)
         }
 
         var candidate: Set<Int>?
         for token in tokens {
-            guard let pages = tokenIndex[token] else {
-                return []
-            }
-            let pageSet = Set(pages)
+            let pageSet = pagesForToken(token, tokenIndex: tokenIndex, minPrefixLength: minPrefixLength)
+            if pageSet.isEmpty { return [] }
             if let existing = candidate {
                 candidate = existing.intersection(pageSet)
             } else {
@@ -1034,6 +1066,18 @@ private struct G3000SearchIndex: Codable {
         }
 
         return (candidate ?? []).sorted()
+    }
+
+    private static func pagesForToken(_ token: String, tokenIndex: [String: [Int]], minPrefixLength: Int) -> Set<Int> {
+        guard token.count >= minPrefixLength else { return [] }
+        if let exact = tokenIndex[token] {
+            return Set(exact)
+        }
+        var collected: Set<Int> = []
+        for (key, pages) in tokenIndex where key.hasPrefix(token) {
+            collected.formUnion(pages)
+        }
+        return collected
     }
 
     static func build(from pageTexts: [String], progress: @escaping (Double) -> Void) -> G3000SearchIndex? {

@@ -551,7 +551,7 @@ struct AddPassengerView: View {
 }
 
 final class BoardingPassViewModel: ObservableObject {
-    @Published var flightName: String = "Elite Air" { didSet { persist() } }
+    @Published var flightName: String = "" { didSet { persist() } }
     @Published var departure: String = "LFPT" { didSet { persist() } }
     @Published var destination: String = "LBTA" { didSet { persist() } }
     @Published var departureCity: String = "Paris" { didSet { persist() } }
@@ -559,10 +559,10 @@ final class BoardingPassViewModel: ObservableObject {
     @Published var travelDate: String = "Feb 15 2026" { didSet { persist() } }
     @Published var departureTime: String = "9:30" { didSet { persist() } }
     @Published var arrivalTime: String = "13:00" { didSet { persist() } }
-    @Published var flightNumber: String = "TCEZP 001" { didSet { persist() } }
+    @Published var flightNumber: String = "" { didSet { persist() } }
     @Published var gate: String = "Pontoise FBO" { didSet { persist() } }
     @Published var boardingGroup: String = "Global Services" { didSet { persist() } }
-    @Published var frequentFlyerPrefix: String = "EZ" { didSet { persist() } }
+    @Published var frequentFlyerPrefix: String = "" { didSet { persist() } }
     @Published var passengers: [Passenger] = [] { didSet { persistIfNeeded() } }
 
     private let seatPool = ["A2", "B2", "A3", "B3"]
@@ -681,7 +681,7 @@ final class BoardingPassViewModel: ObservableObject {
         }
         let storedName = state.flightName.trimmingCharacters(in: .whitespacesAndNewlines)
         if storedName.isEmpty || storedName == "Boarding Pass Builder" {
-            flightName = "Elite Air"
+            flightName = ""
         } else {
             flightName = state.flightName
         }

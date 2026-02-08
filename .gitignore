@@ -6,6 +6,9 @@
 
 # Build
 DerivedData/
+PiperM600Checklist.xcodeproj/DerivedDataLocal/
+PiperM600Checklist.xcodeproj/TestLogos/
+PiperM600Checklist.xcodeproj/TestPlots/
 build/
 
 # SwiftPM

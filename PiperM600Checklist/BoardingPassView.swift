@@ -70,11 +70,15 @@ struct BoardingPassBuilderView: View {
 
     private var headerView: some View {
         VStack(spacing: 6) {
+            BrandLogoView()
+                .frame(maxWidth: isPadLayout ? 140 : 110)
+                .padding(.bottom, 4)
+
             Text("Create boarding passes for a single flight")
                 .font(.custom("Avenir Next Regular", size: isPadLayout ? 13 : 11))
                 .foregroundColor(AppTheme.muted)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 
     private var flightInfoSection: some View {
@@ -163,10 +167,11 @@ struct BoardingPassBuilderView: View {
     }
 
     private func labeledField(title: String, text: Binding<String>) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        HStack(spacing: 10) {
             Text(title)
                 .font(.custom("Avenir Next Regular", size: isPadLayout ? 12 : 10))
                 .foregroundColor(AppTheme.muted)
+                .frame(width: isPadLayout ? 130 : 104, alignment: .leading)
 
             TextField(title, text: text)
                 .textInputAutocapitalization(.words)
@@ -182,6 +187,7 @@ struct BoardingPassBuilderView: View {
                                 .stroke(AppTheme.accentSoft, lineWidth: 1)
                         )
                 )
+                .frame(maxWidth: .infinity)
         }
     }
 }
@@ -208,10 +214,7 @@ private struct BoardingPassPreviewCard: View {
         VStack(spacing: 0) {
             HStack(alignment: .top) {
                 HStack(spacing: 10) {
-                    Image("Logo")
-                        .renderingMode(.original)
-                        .resizable()
-                        .scaledToFit()
+                    BrandLogoView()
                         .frame(width: 78, height: 78)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(flightName.isEmpty ? "Elite Air" : flightName)
@@ -467,19 +470,39 @@ struct BoardingPassSettingsView: View {
     @Binding var frequentFlyerPrefix: String
 
     var body: some View {
-        Form {
-            Section("Flight") {
+        List {
+            Section {
                 TextField("Flight Name", text: $flightName)
+                    .foregroundColor(AppTheme.text)
+                    .listRowBackground(AppTheme.card)
                 TextField("Flight Number", text: $flightNumber)
+                    .foregroundColor(AppTheme.text)
+                    .listRowBackground(AppTheme.card)
                 TextField("Gate", text: $gate)
+                    .foregroundColor(AppTheme.text)
+                    .listRowBackground(AppTheme.card)
+            } header: {
+                Text("Flight")
+                    .foregroundColor(AppTheme.muted)
             }
-            Section("Passenger Defaults") {
+
+            Section {
                 TextField("Boarding Group", text: $boardingGroup)
+                    .foregroundColor(AppTheme.text)
+                    .listRowBackground(AppTheme.card)
                 TextField("Frequent Flyer Prefix", text: $frequentFlyerPrefix)
                     .textInputAutocapitalization(.characters)
                     .disableAutocorrection(true)
+                    .foregroundColor(AppTheme.text)
+                    .listRowBackground(AppTheme.card)
+            } header: {
+                Text("Passenger Defaults")
+                    .foregroundColor(AppTheme.muted)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(InstrumentBackground().ignoresSafeArea())
+        .environment(\.colorScheme, .dark)
         .navigationTitle("Settings")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

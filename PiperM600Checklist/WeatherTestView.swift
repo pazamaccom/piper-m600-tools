@@ -73,6 +73,10 @@ struct WeatherTestView: View {
 
     private var headerView: some View {
         VStack(spacing: 4) {
+            BrandLogoView()
+                .frame(maxWidth: isPadLayout ? 140 : 110)
+                .padding(.bottom, 4)
+
             Text("Decoded METAR + TAF")
                 .font(.custom("Avenir Next Demi Bold", size: isPadLayout ? 18 : 15))
                 .foregroundColor(AppTheme.text)

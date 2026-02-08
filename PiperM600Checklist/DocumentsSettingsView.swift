@@ -22,19 +22,14 @@ struct DocumentsSettingsView: View {
                 .ignoresSafeArea()
 
             List {
-                sectionHeader("Add Documents")
-                addButtonRow(title: "Add Personal Document", category: .personal)
-                addButtonRow(title: "Add Aircraft Document", category: .aircraft)
-                addButtonRow(title: "Add Company Document", category: .company)
+                ForEach(DocumentCategory.allCases) { category in
+                    addButtonRow(title: "Add \(category.title) Document", category: category)
+                }
 
-                sectionHeader("Personal")
-                documentList(for: .personal)
-
-                sectionHeader("Aircraft")
-                documentList(for: .aircraft)
-
-                sectionHeader("Company")
-                documentList(for: .company)
+                ForEach(DocumentCategory.allCases) { category in
+                    sectionHeader(category.title)
+                    documentList(for: category)
+                }
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)

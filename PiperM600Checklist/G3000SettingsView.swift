@@ -3,6 +3,7 @@ import UniformTypeIdentifiers
 
 struct G3000SettingsView: View {
     @AppStorage("default_docs_access_code") private var accessCode = ""
+    @AppStorage(G3000GuideConfig.titleKey) private var guideTitle: String = G3000GuideConfig.defaultTitle
     @State private var showRebuildConfirm = false
     @State private var showRebuildResult = false
     @State private var rebuildMessage = ""
@@ -21,13 +22,14 @@ struct G3000SettingsView: View {
             return "Installed (\(formattedSize(metaInfo.size))), updated \(formattedDate(metaInfo.date))."
         }
         if hasLocalFile {
-            return "Local G3000 PDF is installed."
+            return "Local Avionics PDF is installed."
         }
-        return "No G3000 PDF loaded."
+        return "No Avionics PDF loaded."
     }
 
     var body: some View {
         List {
+            displaySection
             documentSection
             defaultSection
             rebuildSection
@@ -35,69 +37,81 @@ struct G3000SettingsView: View {
         .scrollContentBackground(.hidden)
         .background(InstrumentBackground().ignoresSafeArea())
         .environment(\.colorScheme, .dark)
-        .navigationTitle("G3000 Guide Settings")
+        .navigationTitle("Avionics Guide Settings")
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.pdf]) { result in
             handleImport(result)
         }
-        .alert("Rebuild G3000 Index?", isPresented: $showRebuildConfirm) {
+        .alert("Rebuild Avionics Index?", isPresented: $showRebuildConfirm) {
             Button("Cancel", role: .cancel) {}
             Button("Rebuild", role: .destructive) {
                 let success = G3000IndexCache.clear()
                 rebuildMessage = success
-                    ? "G3000 guide index cleared. It will rebuild next time you open G3000."
-                    : "Could not clear the G3000 guide index. Please try again."
+                    ? "Avionics guide index cleared. It will rebuild next time you open Avionics Guide."
+                    : "Could not clear the Avionics guide index. Please try again."
                 showRebuildResult = true
             }
         } message: {
-            Text("This clears the cached G3000 guide index and forces a rebuild.")
+            Text("This clears the cached Avionics guide index and forces a rebuild.")
         }
-        .alert("G3000 Index", isPresented: $showRebuildResult) {
+        .alert("Avionics Index", isPresented: $showRebuildResult) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(rebuildMessage)
         }
-        .alert("G3000 Document", isPresented: $showStatusAlert) {
+        .alert("Avionics Document", isPresented: $showStatusAlert) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(statusMessage)
         }
-        .alert("Remove G3000 PDF?", isPresented: $showDeleteConfirm) {
+        .alert("Remove Avionics PDF?", isPresented: $showDeleteConfirm) {
             Button("Cancel", role: .cancel) {}
             Button("Remove", role: .destructive) {
                 if DocumentStorage.delete(.g3000) {
                     hasLocalFile = false
                     metaInfo = nil
                     _ = G3000IndexCache.clear()
-                    statusMessage = "G3000 PDF removed."
+                    statusMessage = "Avionics PDF removed."
                 } else {
-                    statusMessage = "Could not remove the G3000 PDF."
+                    statusMessage = "Could not remove the Avionics PDF."
                 }
                 showStatusAlert = true
             }
         } message: {
-            Text("This removes the locally stored G3000 PDF.")
+            Text("This removes the locally stored Avionics PDF.")
         }
-        .alert("Replace G3000 PDF?", isPresented: $showReplaceConfirm) {
+        .alert("Replace Avionics PDF?", isPresented: $showReplaceConfirm) {
             Button("Cancel", role: .cancel) {}
             Button("Replace", role: .destructive) {
                 showImporter = true
             }
         } message: {
-            Text("This will replace the current G3000 PDF.")
+            Text("This will replace the current Avionics PDF.")
         }
-        .alert("Replace G3000 PDF?", isPresented: $showReplaceConfirmForDownload) {
+        .alert("Replace Avionics PDF?", isPresented: $showReplaceConfirmForDownload) {
             Button("Cancel", role: .cancel) {}
             Button("Replace", role: .destructive) {
                 Task { await downloadDefault() }
             }
         } message: {
-            Text("This will replace the current G3000 PDF with the default document.")
+            Text("This will replace the current Avionics PDF with the default document.")
+        }
+    }
+
+    private var displaySection: some View {
+        Section {
+            TextField("Guide name", text: $guideTitle)
+                .textInputAutocapitalization(.words)
+                .disableAutocorrection(true)
+        } header: {
+            Text("Display")
+        } footer: {
+            Text("Shown as the title on the Avionics guide page.")
         }
     }
 
     private var documentSection: some View {
         Section {
-            Button("Load G3000 PDF") {
+            Button("Load Avionics PDF") {
                 if hasLocalFile {
                     showReplaceConfirm = true
                 } else {
@@ -109,7 +123,7 @@ struct G3000SettingsView: View {
             Button {
                 showDeleteConfirm = true
             } label: {
-                Text("Remove Local G3000 PDF")
+                Text("Remove Local Avionics PDF")
                     .foregroundColor(hasLocalFile ? .red : .secondary)
             }
             .disabled(!hasLocalFile || isDownloading)
@@ -134,7 +148,7 @@ struct G3000SettingsView: View {
                 }
             } label: {
                 HStack {
-                    Text("Download Default G3000")
+                    Text("Download Default Avionics PDF")
                     Spacer()
                     if isDownloading {
                         ProgressView()
@@ -145,7 +159,7 @@ struct G3000SettingsView: View {
         } header: {
             Text("Default Document")
         } footer: {
-            Text("Use the shared access code to download the default G3000 guide.")
+            Text("Use the shared access code to download the default Avionics PDF.")
         }
     }
 
@@ -154,10 +168,10 @@ struct G3000SettingsView: View {
             Button {
                 showRebuildConfirm = true
             } label: {
-                Text("Rebuild G3000 Guide Index")
+                Text("Rebuild Avionics Guide Index")
             }
         } footer: {
-            Text("Clears the cached G3000 guide index and rebuilds it next time the guide is opened.")
+            Text("Clears the cached Avionics guide index and rebuilds it next time the guide is opened.")
         }
     }
 
@@ -175,12 +189,12 @@ struct G3000SettingsView: View {
                 hasLocalFile = true
                 metaInfo = DocumentStorage.meta(for: .g3000)
                 _ = G3000IndexCache.clear()
-                statusMessage = "G3000 PDF loaded."
+                statusMessage = "Avionics PDF loaded."
             } catch {
-                statusMessage = "Unable to import the G3000 PDF."
+                statusMessage = "Unable to import the Avionics PDF."
             }
         case .failure:
-            statusMessage = "Unable to import the G3000 PDF."
+            statusMessage = "Unable to import the Avionics PDF."
         }
         showStatusAlert = true
     }
@@ -201,7 +215,7 @@ struct G3000SettingsView: View {
             hasLocalFile = true
             metaInfo = DocumentStorage.meta(for: .g3000)
             _ = G3000IndexCache.clear()
-            statusMessage = "Default G3000 downloaded."
+            statusMessage = "Default Avionics PDF downloaded."
         } catch {
             statusMessage = error.localizedDescription
         }

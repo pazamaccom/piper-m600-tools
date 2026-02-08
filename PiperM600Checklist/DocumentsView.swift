@@ -19,9 +19,9 @@ struct DocumentsView: View {
 
                 ScrollView {
                     VStack(spacing: isPadLayout ? 18 : 14) {
-                        documentSection(for: .personal)
-                        documentSection(for: .aircraft)
-                        documentSection(for: .company)
+                        ForEach(DocumentCategory.allCases) { category in
+                            documentSection(for: category)
+                        }
                     }
                     .padding(.horizontal, isPadLayout ? 22 : 16)
                     .padding(.bottom, isPadLayout ? 24 : 18)
@@ -44,11 +44,15 @@ struct DocumentsView: View {
 
     private var headerView: some View {
         VStack(spacing: isPadLayout ? 10 : 6) {
+            BrandLogoView()
+                .frame(maxWidth: isPadLayout ? 140 : 110)
+                .padding(.bottom, 4)
+
             Text("Documents")
                 .font(.custom("Avenir Next Condensed Demi Bold", size: isPadLayout ? 26 : 20))
                 .foregroundColor(AppTheme.text)
 
-            Text("Personal, aircraft, and company references")
+            Text("Personal, aircraft, insurance, company, and operator references")
                 .font(.custom("Avenir Next Regular", size: isPadLayout ? 14 : 12))
                 .foregroundColor(AppTheme.muted)
         }

@@ -1,4 +1,6 @@
 import SwiftUI
+import UniformTypeIdentifiers
+import UIKit
 
 enum AppTheme {
     static let backgroundTop = Color(red: 0.08, green: 0.10, blue: 0.14)
@@ -14,6 +16,17 @@ enum AppTheme {
     static let gridLine = Color.white.opacity(0.06)
 }
 
+enum MainMenuConfig {
+    static let logoBase64Key = "mainMenuLogoBase64"
+    static let titleKey = "mainMenuTitle"
+    static let subtitleKey = "mainMenuSubtitle"
+    static let descriptionKey = "mainMenuDescription"
+
+    static let defaultTitle = "Piper M600/SLS"
+    static let defaultSubtitle = "Main Menu"
+    static let defaultDescription = "This application calculates aircraft loading and verifies compliance with weight and balance limitations, with graphical and numerical results. It includes an integrated checklist for Piper M600 procedures, POH access by keyword and subject, document storage for flight crew, aircraft, and company operations, and a cockpit scratchpad for pilot convenience."
+}
+
 struct ContentView: View {
     var body: some View {
         NavigationStack {
@@ -22,9 +35,39 @@ struct ContentView: View {
     }
 }
 
+struct BrandLogoView: View {
+    @AppStorage(MainMenuConfig.logoBase64Key) private var mainMenuLogoBase64: String = ""
+    private let fallbackAssetName: String
+
+    init(fallbackAssetName: String = "Logo") {
+        self.fallbackAssetName = fallbackAssetName
+    }
+
+    var body: some View {
+        if
+            let data = Data(base64Encoded: mainMenuLogoBase64),
+            !data.isEmpty,
+            let uiImage = UIImage(data: data)
+        {
+            Image(uiImage: uiImage)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFit()
+        } else {
+            Image(fallbackAssetName)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFit()
+        }
+    }
+}
+
 struct RootMenuView: View {
     @StateObject private var store = ChecklistStore()
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @AppStorage(MainMenuConfig.logoBase64Key) private var mainMenuLogoBase64: String = ""
+    @AppStorage(MainMenuConfig.titleKey) private var mainMenuTitle: String = MainMenuConfig.defaultTitle
+    @AppStorage(MainMenuConfig.descriptionKey) private var mainMenuDescription: String = MainMenuConfig.defaultDescription
 
     private var isPadLayout: Bool {
         horizontalSizeClass == .regular
@@ -102,7 +145,7 @@ struct RootMenuView: View {
                         G3000View()
                     } label: {
                         MenuCardView(
-                            title: "G3000 Pilot Guide",
+                            title: "Avionics Guide",
                             subtitle: "Avionics reference and search",
                             systemImage: "gauge"
                         )
@@ -119,28 +162,32 @@ struct RootMenuView: View {
             .frame(maxWidth: .infinity, alignment: .top)
         }
         .background(InstrumentBackground().ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink {
+                    MainMenuSetupView()
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .foregroundColor(AppTheme.accent)
+                }
+                .accessibilityLabel("Main Menu Setup")
+            }
+        }
     }
 
     private var rootHeader: some View {
         VStack(spacing: isPadLayout ? 12 : 8) {
-            Image("Logo")
-                .renderingMode(.original)
-                .resizable()
-                .scaledToFit()
+            BrandLogoView()
                 .frame(maxWidth: isPadLayout ? 180 : 120)
                 .padding(.top, isPadLayout ? 10 : 4)
 
-            Text("Piper M600/SLS")
+            Text(mainMenuTitle)
                 .font(.custom("Avenir Next Condensed Demi Bold", size: isPadLayout ? 28 : 22))
                 .tracking(0.2)
                 .foregroundColor(AppTheme.text)
 
-            Text("Main Menu")
-                .font(.custom("Avenir Next Regular", size: isPadLayout ? 17 : 14))
-                .foregroundColor(AppTheme.muted)
-                .padding(.bottom, isPadLayout ? 18 : 14)
-
-            Text("This application calculates aircraft loading and verifies compliance with weight and balance limitations, with graphical and numerical results. It includes an integrated checklist for Piper M600 procedures, POH access by keyword and subject, document storage for flight crew, aircraft, and company operations, and a cockpit scratchpad for pilot convenience.")
+            Text(mainMenuDescription)
                 .font(.custom("Avenir Next Regular", size: isPadLayout ? 12 : 10))
                 .foregroundColor(AppTheme.muted)
                 .multilineTextAlignment(.center)
@@ -205,10 +252,376 @@ struct RootMenuView: View {
     }
 }
 
+struct MainMenuSetupView: View {
+    @AppStorage(MainMenuConfig.logoBase64Key) private var mainMenuLogoBase64: String = ""
+    @AppStorage(MainMenuConfig.titleKey) private var mainMenuTitle: String = MainMenuConfig.defaultTitle
+    @AppStorage(MainMenuConfig.subtitleKey) private var mainMenuSubtitle: String = MainMenuConfig.defaultSubtitle
+    @AppStorage(MainMenuConfig.descriptionKey) private var mainMenuDescription: String = MainMenuConfig.defaultDescription
+    @AppStorage("editPasscode") private var editPasscode: String = ""
+
+    @State private var showLogoImporter = false
+    @State private var showLogoImportError = false
+    @State private var logoImportErrorMessage = ""
+    @State private var isUnlocked = false
+    @State private var showUnlockPopup = false
+    @State private var unlockInput = ""
+    @State private var newPasscodeInput = ""
+    @State private var unlockError: String?
+    @State private var showResetAcknowledgment = false
+
+    private var isEditingLocked: Bool {
+        !isUnlocked
+    }
+
+    var body: some View {
+        List {
+            Section {
+                HStack {
+                    Spacer()
+                    BrandLogoView()
+                        .frame(maxWidth: 180, maxHeight: 140)
+                    Spacer()
+                }
+
+                if let dimensionsText = logoDimensionsText {
+                    Text("Current image size: \(dimensionsText)")
+                        .font(.custom("Avenir Next Regular", size: 12))
+                        .foregroundColor(AppTheme.muted)
+                }
+
+                Button("Choose Logo From Files") {
+                    if isEditingLocked {
+                        presentUnlockPrompt()
+                    } else {
+                        showLogoImporter = true
+                    }
+                }
+            } header: {
+                Text("Main Menu Logo")
+            } footer: {
+                Text("The selected logo appears at the top of the main menu.")
+            }
+
+            Section {
+                Text("Use PNG or JPEG. A square image works best.\nRecommended size: 1024 x 1024 px.\nMinimum size: 400 x 400 px.\nKeep file size under 5 MB for smooth loading.\nIf text is part of the logo, keep it inside the center 80% area so it is not clipped.")
+                    .font(.custom("Avenir Next Regular", size: 12))
+                    .foregroundColor(AppTheme.muted)
+            } header: {
+                Text("Logo Requirements")
+            }
+
+            Section {
+                lockableField {
+                    TextField("Title under logo", text: $mainMenuTitle)
+                }
+            } header: {
+                Text("Main Menu Header")
+            } footer: {
+                Text("This field shows the current value and updates the main menu immediately.")
+            }
+
+            Section {
+                lockableField {
+                    TextEditor(text: $mainMenuDescription)
+                        .frame(minHeight: 160)
+                        .foregroundColor(AppTheme.text)
+                        .scrollContentBackground(.hidden)
+                }
+            } header: {
+                Text("Main Menu Description")
+            } footer: {
+                Text("Edit the explanatory text shown below the header.")
+            }
+
+            Section {
+                Button(role: .destructive) {
+                    if isEditingLocked {
+                        presentUnlockPrompt()
+                    } else {
+                        resetMainMenuDefaults()
+                        showResetAcknowledgmentBanner()
+                    }
+                } label: {
+                    Text("Reset Defaults")
+                }
+            } footer: {
+                Text("Restores logo, main menu header, and description to default values.")
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(InstrumentBackground().ignoresSafeArea())
+        .environment(\.colorScheme, .dark)
+        .navigationTitle("Main Menu Setup")
+        .onAppear {
+            isUnlocked = false
+        }
+        .fileImporter(isPresented: $showLogoImporter, allowedContentTypes: [.image]) { result in
+            handleLogoImport(result)
+        }
+        .alert("Logo Import Error", isPresented: $showLogoImportError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(logoImportErrorMessage)
+        }
+        .overlay {
+            ZStack(alignment: .top) {
+                if showResetAcknowledgment {
+                    resetAcknowledgmentBanner
+                        .padding(.top, 8)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+
+                if showUnlockPopup {
+                    unlockOverlay
+                }
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: showResetAcknowledgment)
+    }
+
+    private var logoDimensionsText: String? {
+        guard
+            let data = Data(base64Encoded: mainMenuLogoBase64),
+            let uiImage = UIImage(data: data)
+        else {
+            return nil
+        }
+        return "\(Int(uiImage.size.width)) x \(Int(uiImage.size.height)) px"
+    }
+
+    @ViewBuilder
+    private func lockableField<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        ZStack {
+            content()
+                .disabled(isEditingLocked)
+            if isEditingLocked {
+                Rectangle()
+                    .fill(Color.clear)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        presentUnlockPrompt()
+                    }
+            }
+        }
+    }
+
+    private func presentUnlockPrompt() {
+        unlockInput = ""
+        newPasscodeInput = ""
+        unlockError = nil
+        showUnlockPopup = true
+    }
+
+    private func handleUnlockSubmit() {
+        if editPasscode.isEmpty {
+            let trimmed = newPasscodeInput.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty else {
+                unlockError = "Enter a new passcode."
+                return
+            }
+            editPasscode = trimmed
+            isUnlocked = true
+            showUnlockPopup = false
+            unlockError = nil
+            return
+        }
+
+        if unlockInput == editPasscode {
+            isUnlocked = true
+            showUnlockPopup = false
+            unlockError = nil
+        } else {
+            unlockError = "Incorrect passcode."
+        }
+    }
+
+    private var unlockOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.45)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    showUnlockPopup = false
+                    unlockError = nil
+                }
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Are you sure?")
+                    .font(.custom("Avenir Next Demi Bold", size: 16))
+                    .foregroundColor(AppTheme.text)
+
+                if editPasscode.isEmpty {
+                    Text("No passcode is set. Enter a new passcode to unlock main menu setup editing.")
+                        .font(.custom("Avenir Next Regular", size: 13))
+                        .foregroundColor(AppTheme.muted)
+
+                    SecureField("New Passcode", text: $newPasscodeInput)
+                        .textContentType(.newPassword)
+                        .keyboardType(.numberPad)
+                        .padding(10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(AppTheme.backgroundTop.opacity(0.75))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(AppTheme.accentSoft, lineWidth: 1)
+                                )
+                        )
+                        .foregroundColor(AppTheme.text)
+                } else {
+                    Text("Enter passcode to unlock main menu setup editing.")
+                        .font(.custom("Avenir Next Regular", size: 13))
+                        .foregroundColor(AppTheme.muted)
+
+                    SecureField("Passcode", text: $unlockInput)
+                        .textContentType(.password)
+                        .keyboardType(.numberPad)
+                        .padding(10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(AppTheme.backgroundTop.opacity(0.75))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(AppTheme.accentSoft, lineWidth: 1)
+                                )
+                        )
+                        .foregroundColor(AppTheme.text)
+                }
+
+                if let unlockError {
+                    Text(unlockError)
+                        .font(.custom("Avenir Next Regular", size: 12))
+                        .foregroundColor(.red)
+                }
+
+                HStack(spacing: 10) {
+                    Button("Cancel") {
+                        showUnlockPopup = false
+                        unlockError = nil
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(AppTheme.cardHighlight)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(AppTheme.accentSoft, lineWidth: 1)
+                            )
+                    )
+                    .foregroundColor(AppTheme.text)
+
+                    Button(editPasscode.isEmpty ? "Set & Unlock" : "Unlock") {
+                        handleUnlockSubmit()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(AppTheme.accent)
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
+                }
+            }
+            .padding(16)
+            .frame(maxWidth: 340)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(AppTheme.card)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(AppTheme.bezelLight, lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.45), radius: 12, x: 0, y: 8)
+            .padding(.horizontal, 24)
+        }
+    }
+
+    private var resetAcknowledgmentBanner: some View {
+        Text("Data have been reset")
+            .font(.custom("Avenir Next Demi Bold", size: 13))
+            .foregroundColor(AppTheme.text)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(AppTheme.card)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(AppTheme.accentSoft, lineWidth: 1)
+                    )
+            )
+            .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
+    }
+
+    private func showResetAcknowledgmentBanner() {
+        showResetAcknowledgment = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+            showResetAcknowledgment = false
+        }
+    }
+
+    private func resetMainMenuDefaults() {
+        mainMenuLogoBase64 = ""
+        mainMenuTitle = MainMenuConfig.defaultTitle
+        mainMenuSubtitle = MainMenuConfig.defaultSubtitle
+        mainMenuDescription = MainMenuConfig.defaultDescription
+    }
+
+    private func handleLogoImport(_ result: Result<URL, Error>) {
+        guard case .success(let url) = result else {
+            if case .failure(let error) = result {
+                logoImportErrorMessage = error.localizedDescription
+                showLogoImportError = true
+            }
+            return
+        }
+
+        let hasAccess = url.startAccessingSecurityScopedResource()
+        defer {
+            if hasAccess {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+
+        do {
+            let imageData = try Data(contentsOf: url)
+            guard imageData.count <= 5_000_000 else {
+                throw NSError(
+                    domain: "MainMenuSetup",
+                    code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "The selected file is larger than 5 MB."]
+                )
+            }
+
+            guard let image = UIImage(data: imageData) else {
+                throw NSError(
+                    domain: "MainMenuSetup",
+                    code: 2,
+                    userInfo: [NSLocalizedDescriptionKey: "The selected file is not a valid image."]
+                )
+            }
+
+            guard image.size.width >= 400, image.size.height >= 400 else {
+                throw NSError(
+                    domain: "MainMenuSetup",
+                    code: 3,
+                    userInfo: [NSLocalizedDescriptionKey: "The image is too small. Minimum size is 400 x 400 px."]
+                )
+            }
+
+            mainMenuLogoBase64 = imageData.base64EncodedString()
+        } catch {
+            logoImportErrorMessage = error.localizedDescription
+            showLogoImportError = true
+        }
+    }
+}
+
 struct ChecklistHomeView: View {
     @ObservedObject var store: ChecklistStore
     @State private var showResetAlert = false
+    @State private var showResetAcknowledgment = false
     @AppStorage("tailNumber") private var tailNumber: String = ""
+    @AppStorage(MainMenuConfig.titleKey) private var mainMenuTitle: String = MainMenuConfig.defaultTitle
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private var isPadLayout: Bool {
@@ -265,18 +678,24 @@ struct ChecklistHomeView: View {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
                 store.resetProgress()
+                showResetAcknowledgmentBanner()
             }
         } message: {
             Text("This clears all checkmarks but keeps your checklist edits.")
         }
+        .overlay(alignment: .top) {
+            if showResetAcknowledgment {
+                resetAcknowledgmentBanner
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: showResetAcknowledgment)
     }
 
     private var header: some View {
         VStack(spacing: isPadLayout ? 14 : 10) {
-            Image("Logo")
-                .renderingMode(.original)
-                .resizable()
-                .scaledToFit()
+            BrandLogoView()
                 .frame(maxWidth: isPadLayout ? 200 : 132)
                 .padding(.top, isPadLayout ? 10 : 4)
 
@@ -290,13 +709,16 @@ struct ChecklistHomeView: View {
     }
 
     private var headerTitle: String {
+        let baseTitle = mainMenuTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            ? MainMenuConfig.defaultTitle
+            : mainMenuTitle
         let cleaned = tailNumber
             .uppercased()
             .filter { $0.isNumber || $0.isLetter }
         if cleaned.isEmpty {
-            return "Piper M600/SLS"
+            return baseTitle
         }
-        return "Piper M600/SLS - \(cleaned)"
+        return "\(baseTitle) - \(cleaned)"
     }
 
     private func binding(for index: Int) -> Binding<ChecklistSection> {
@@ -307,6 +729,30 @@ struct ChecklistHomeView: View {
                 store.save()
             }
         )
+    }
+
+    private var resetAcknowledgmentBanner: some View {
+        Text("Data have been reset")
+            .font(.custom("Avenir Next Demi Bold", size: 13))
+            .foregroundColor(AppTheme.text)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(AppTheme.card)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(AppTheme.accentSoft, lineWidth: 1)
+                    )
+            )
+            .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
+    }
+
+    private func showResetAcknowledgmentBanner() {
+        showResetAcknowledgment = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+            showResetAcknowledgment = false
+        }
     }
 }
 
@@ -434,13 +880,6 @@ struct ChecklistSectionView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 18) {
-                Image("Logo")
-                    .renderingMode(.original)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 140)
-                    .padding(.top, 6)
-
                 Text(section.title)
                     .font(.custom("Avenir Next Condensed Demi Bold", size: 24))
                     .foregroundColor(AppTheme.text)

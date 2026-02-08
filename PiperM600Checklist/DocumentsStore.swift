@@ -3,7 +3,9 @@ import Foundation
 enum DocumentCategory: String, Codable, CaseIterable, Identifiable {
     case personal
     case aircraft
+    case insurance
     case company
+    case operatorDocs = "operator"
 
     var id: String { rawValue }
 
@@ -13,8 +15,12 @@ enum DocumentCategory: String, Codable, CaseIterable, Identifiable {
             return "Personal"
         case .aircraft:
             return "Aircraft"
+        case .insurance:
+            return "Insurance"
         case .company:
             return "Company"
+        case .operatorDocs:
+            return "Operator"
         }
     }
 }

@@ -1,6 +1,11 @@
 import SwiftUI
 @preconcurrency import PDFKit
 
+enum G3000GuideConfig {
+    static let titleKey = "g3000_guide_title"
+    static let defaultTitle = "Avionics Guide"
+}
+
 struct G3000View: View {
     @StateObject private var model = G3000ViewModel()
     @State private var showSettings = false
@@ -15,6 +20,7 @@ struct G3000View: View {
     @FocusState private var isSearchFocused: Bool
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.dismiss) private var dismiss
+    @AppStorage(G3000GuideConfig.titleKey) private var guideTitle: String = G3000GuideConfig.defaultTitle
 
     private var isPadLayout: Bool {
         horizontalSizeClass == .regular
@@ -59,7 +65,7 @@ struct G3000View: View {
                             Image(systemName: "doc.text.magnifyingglass")
                                 .font(.system(size: 34, weight: .semibold))
                                 .foregroundColor(AppTheme.accent)
-                            Text("No G3000 Guide loaded")
+                            Text("No Avionics Guide loaded")
                                 .font(.headline)
                                 .foregroundColor(.white)
                             Text("Open Settings to load a PDF or download the default guide.")
@@ -180,7 +186,7 @@ struct G3000View: View {
 
     private var headerView: some View {
         VStack(spacing: 4) {
-            Text("G3000 Pilot Guide")
+            Text(displayTitle)
                 .font(.custom("Avenir Next Demi Bold", size: isPadLayout ? 18 : 15))
                 .foregroundColor(AppTheme.text)
 
@@ -188,6 +194,11 @@ struct G3000View: View {
                 .font(.custom("Avenir Next Regular", size: isPadLayout ? 13 : 11))
                 .foregroundColor(AppTheme.muted)
         }
+    }
+
+    private var displayTitle: String {
+        let trimmed = guideTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? G3000GuideConfig.defaultTitle : trimmed
     }
 
     private var searchBar: some View {
@@ -445,7 +456,7 @@ final class G3000ViewModel: ObservableObject {
 
 
     var resultsSummary: String {
-        guard document != nil else { return "Load a G3000 PDF in Settings." }
+        guard document != nil else { return "Load an Avionics PDF in Settings." }
         guard !isIndexing else { return "Indexing..." }
         guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return "Enter a search term." }
         if query.trimmingCharacters(in: .whitespacesAndNewlines).count < 4 { return "Type at least 4 characters." }
